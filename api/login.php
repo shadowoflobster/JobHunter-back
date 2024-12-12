@@ -28,12 +28,19 @@ if ($mysqli->connect_error) {
 }
 
 // Secure query with prepared statements
-$query = "SELECT * FROM users WHERE email = ?";
+$query = " SELECT 'user' AS type, id, password, email, role 
+    FROM users 
+    WHERE email = ? 
+    UNION 
+    SELECT 'company' AS type, id, password, email, role 
+    FROM companies 
+    WHERE email = ?;";
+
 $stmt = $mysqli->prepare($query);
 
 if ($stmt) {
     // Bind the parameter
-    $stmt->bind_param("s", $email);
+    $stmt->bind_param("ss", $email,$email   );
 
     // Execute the query
     $stmt->execute();
@@ -53,7 +60,7 @@ if ($stmt) {
                 "iat" => time(),           // Issued at
                 "exp" => time() + 3600,    // Token expires in 1 hour
                 "user_id" => $user['id'],  // Include user information in the token
-                "email" => $user['email']  // Add additional claims if necessary
+                "email" => $user['email'],  // Add additional claims if necessary
             ];
 
             $jwt = JWT::encode($payload, $key, 'HS256');
@@ -61,7 +68,7 @@ if ($stmt) {
             $header = apache_request_headers();
             
             
-            echo json_encode(["message" => "Login successful!", "token" => $jwt]);
+            echo json_encode(value: ["message" => "Login successful!", "token" => $jwt,"role" => $user['role']]);
 
         } else {
             echo json_encode(["error" => "Incorrect password."]);

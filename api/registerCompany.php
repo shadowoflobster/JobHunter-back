@@ -1,4 +1,4 @@
-    <?php
+<?php
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Methods: POST, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
@@ -7,13 +7,12 @@
     $data = json_decode(file_get_contents("php://input"), true);
 
     // Validate input
-    if (empty($data['name']) || empty($data['surname']) || empty($data['email']) || empty($data['password'])) {
+    if (empty($data['name']) || empty($data['email']) || empty($data['password'])) {
         echo json_encode(["status" => "error", "message" => "All fields are required."]);
         exit;
     }
 
-    $name = $data['name'];
-    $surname=$data['surname'];
+    $name = $data['name'];  
     $email = $data['email'];
     $password = $data['password'];
 
@@ -55,12 +54,11 @@
     }
     $stmt->close();
     $stmt2->close();
-
     // Insert the new user into the database
-    $query = "INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO companies (name,  email, password) VALUES (?,  ?, ?)";
     $stmt = $mysqli->prepare($query);
     if ($stmt) {
-        $stmt->bind_param("ssss", $name,$surname, $email, $hashedPassword);
+        $stmt->bind_param("sss", $name, $email, $hashedPassword);
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "message" => "Registration successful."]);
         } else {
