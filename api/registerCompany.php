@@ -66,7 +66,7 @@
         }
         $stmt->close();
     } else {
-        echo json_encode(["status" => "error", "message" => "Query preparation failed."]);
+        echo json_encode(value: ["status" => "error", "message" => "Query preparation failed."]);
     }
 
     // Close the database connection

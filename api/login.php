@@ -61,6 +61,7 @@ if ($stmt) {
                 "exp" => time() + 3600,    // Token expires in 1 hour
                 "user_id" => $user['id'],  // Include user information in the token
                 "email" => $user['email'],  // Add additional claims if necessary
+                "user_role" => $user['role'], //
             ];
 
             $jwt = JWT::encode($payload, $key, 'HS256');
@@ -68,7 +69,7 @@ if ($stmt) {
             $header = apache_request_headers();
             
             
-            echo json_encode(value: ["message" => "Login successful!", "token" => $jwt,"role" => $user['role']]);
+            echo json_encode(value: ["message" => "Login successful!", "token" => $jwt,"id"=>$user['id'],"role" => $user['role']]);
 
         } else {
             echo json_encode(["error" => "Incorrect password."]);
