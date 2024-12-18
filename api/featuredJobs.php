@@ -25,6 +25,10 @@ $query = "
             companies
         ON           
             job_listings.company_id=companies.id
+        WHERE
+            job_listings.isFeatured = 1
+        LIMIT 6
+        
 ";
 $stmt = $mysqli->prepare($query);
 

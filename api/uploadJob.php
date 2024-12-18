@@ -9,8 +9,9 @@
 
     (empty($data['salary']) && (empty($data['minSalary']) && empty($data['maxSalary']))) //Binary opeartion checks if all salary fields are empty
     
-    || empty($data['currency']) || empty($data['location']) || empty($data['company_id'])){
+    || empty($data['currency']) || empty($data['location']) || empty($data['company_id']) || empty($data['job_type'])){
         echo json_encode(["status" => "error", "message" => "All fields are required."]);
+        echo json_encode($data['title'],$data['description'],$data['salary'],$data['minSalary'],$data['maxSalary'],$data['currency'],$data['location'],$data['company_id'],$data['jobType']);
         exit;
     }
 
@@ -28,6 +29,8 @@
     $currency=$data['currency'];
     $location=$data['location'];
     $company_id = $data['company_id'];
+    $job_type = $data['job_type'];
+    $types = 'sssssss';
 
     $mysqli = new mysqli("localhost", "root", "", "example");
 
@@ -36,36 +39,52 @@
         exit;
     }
 
-    $query = "INSERT INTO job_listings (title, description, requirements, currency, location, company_id";
+    $query = "INSERT INTO job_listings (title, description, requirements, currency, location, company_id, job_type";
 
+
+    //Query takes columns only if specific requirements exist
     if($salary !== null){
         $query .= ", salary";
-    }elseif($minSalary !== null){
+    }
+    if($minSalary !== null){
         $query .= ", minSalary";
-    }elseif($maxSalary !== null){
+    }
+    if($maxSalary !== null){
         $query .= ", maxSalary";
     }
 
-    $query.=") VALUES (?,?,?,?,?,?";
-    
+    $query.=") VALUES (?,?,?,?,?,?,?";
+
+    //Query takes values only if specific requirements exist
     if($salary !== null){
         $query .= ", ?";
-    }elseif($minSalary !== null){
+    }
+    if($minSalary !== null){
         $query .= ", ?";
-    }elseif($maxSalary !== null){
+    }
+    if($maxSalary !== null){
         $query .= ", ?";
     }
     $query .= ")";
 
     $stmt=$mysqli->prepare($query);
     if($stmt){
+        $params = [ $title, $description, $requirements, $currency, $location, $company_id, $job_type];
+        $types = 'sssssss';
         if ($salary !== null) {
-            $stmt->bind_param('sssssss', $title, $description, $requirements, $currency, $location, $company_id, $salary);
-        } elseif ($minSalary !== null) {
-            $stmt->bind_param('sssssss', $title, $description, $requirements, $currency, $location, $company_id, $minSalary);
-        } elseif ($maxSalary !== null) {
-            $stmt->bind_param('sssssss', $title, $description, $requirements, $currency, $location, $company_id, $maxSalary);
+            $types .='s';
+            $params[]=$salary;
         }
+        if ($minSalary !== null) {
+            $types .='s';
+            $params[]=$minSalary;
+        } 
+        if ($maxSalary !== null) {
+            $types .='s';
+            $params[]=$maxSalary;
+        }
+        $stmt->bind_param($types, ...$params);
+
 
     if($stmt->execute()){
         echo json_encode(["status" => "success", "message" =>"Job uploaded successfuly"]);
