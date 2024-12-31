@@ -16,7 +16,7 @@ $query = "
             job_listings.requirements, 
             job_listings.currency, 
             job_listings.location, 
-            job_listings.job_type,
+            job_listings.category,
             companies.name AS company_name,
             job_listings.title
         FROM 

@@ -9,7 +9,7 @@
 
     (empty($data['salary']) && (empty($data['minSalary']) && empty($data['maxSalary']))) //Binary opeartion checks if all salary fields are empty
     
-    || empty($data['currency']) || empty($data['location']) || empty($data['company_id']) || empty($data['job_type'])){
+    || empty($data['currency']) || empty($data['location']) || empty($data['company_id']) || empty($data['category'])){
         echo json_encode(["status" => "error", "message" => "All fields are required."]);
         echo json_encode($data['title'],$data['description'],$data['salary'],$data['minSalary'],$data['maxSalary'],$data['currency'],$data['location'],$data['company_id'],$data['jobType']);
         exit;
@@ -29,7 +29,7 @@
     $currency=$data['currency'];
     $location=$data['location'];
     $company_id = $data['company_id'];
-    $job_type = $data['job_type'];
+    $category = $data['category'];
     $types = 'sssssss';
 
     $mysqli = new mysqli("localhost", "root", "", "example");
@@ -39,7 +39,7 @@
         exit;
     }
 
-    $query = "INSERT INTO job_listings (title, description, requirements, currency, location, company_id, job_type";
+    $query = "INSERT INTO job_listings (title, description, requirements, currency, location, company_id, category";
 
 
     //Query takes columns only if specific requirements exist
@@ -69,7 +69,7 @@
 
     $stmt=$mysqli->prepare($query);
     if($stmt){
-        $params = [ $title, $description, $requirements, $currency, $location, $company_id, $job_type];
+        $params = [ $title, $description, $requirements, $currency, $location, $company_id, $category];
         $types = 'sssssss';
         if ($salary !== null) {
             $types .='s';

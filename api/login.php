@@ -28,11 +28,11 @@ if ($mysqli->connect_error) {
 }
 
 // Secure query with prepared statements
-$query = " SELECT 'user' AS type, id, password, email, role 
+$query = " SELECT 'user' AS type, id, name, password, email, role 
     FROM users 
     WHERE email = ? 
     UNION 
-    SELECT 'company' AS type, id, password, email, role 
+    SELECT 'company' AS type, id, name, password, email, role 
     FROM companies 
     WHERE email = ?;";
 
@@ -60,6 +60,7 @@ if ($stmt) {
                 "iat" => time(),           // Issued at
                 "exp" => time() + 3600,    // Token expires in 1 hour
                 "user_id" => $user['id'],  // Include user information in the token
+                "name" => $user['name'],   // Name of the user
                 "email" => $user['email'],  // Add additional claims if necessary
                 "user_role" => $user['role'], //
             ];
