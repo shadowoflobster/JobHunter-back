@@ -1,4 +1,6 @@
 <?php
+require('dotenv').config();
+
 if ($_SERVER['REQUEST_URI'] === '/api/user') {
     require_once './api/user.php';
 } else {

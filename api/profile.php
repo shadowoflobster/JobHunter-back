@@ -56,7 +56,8 @@ if (isset($header['Authorization'])) {
             user_info.skills,
             user_info.gender,
             user_info.mobile_number,
-            user_info.profile_picture
+            user_info.profile_picture,
+            user_info.profile_image
         FROM 
             user_info
         INNER JOIN

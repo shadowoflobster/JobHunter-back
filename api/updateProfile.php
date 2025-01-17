@@ -7,6 +7,11 @@ header('Content-Type: application/json');
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
@@ -39,6 +44,8 @@ try {
     exit;
 }
 
+
+
 $allowedFields = ["position", "address", "website", "about_me", "skills"];
 $updates = [];
 $types = "";
@@ -60,7 +67,8 @@ foreach ($allowedFields as $field) {
         $types .= "s";
         $values[] = $value;
     }
-}
+}     
+     
 
 if (empty($updates)) {
     echo json_encode(["success" => false, "error" => "No valid fields to update"]);
