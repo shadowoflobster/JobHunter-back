@@ -35,7 +35,7 @@ $result = $mysqli->query($query);
     while ($row = $result->fetch_assoc()) {
         $jobListings[] = $row;
     }
-    echo json_encode(["status" => "success", "data" => $jobListings]);
+    echo json_encode( ["status" => "success", "data" => $jobListings]);
 } else {
     echo json_encode(["status" => "error", "message" => "Failed to fetch job listings."]);
 }

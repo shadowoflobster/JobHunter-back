@@ -43,6 +43,7 @@ try{
     echo json_encode(["success" => false, "error" => "Invalid token"]);
     exit;
 }
+$userRole = $decoded->user_role;
 
 $cloudinary = new Cloudinary([
     'cloud' => [
@@ -64,7 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     try {
         $result = $cloudinary->uploadApi()->upload($filePath,['public_id'->$name]);
-        $query = "UPDATE user_info SET profile_image = ? WHERE user_id = ?";
+        switch ($userRole){
+            case 'user':
+                $query = "UPDATE user_info SET profile_image = ? WHERE user_id = ?";
+                break;
+            case 'company':
+                $query = "UPDATE companies SET profile_image = ? WHERE companies.id = ?";
+
+        }
+        
         $imageUrl = $result['secure_url'];
         $stmt = $mysqli->prepare($query);
 

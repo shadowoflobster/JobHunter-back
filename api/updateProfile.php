@@ -39,6 +39,7 @@ $token = str_replace('Bearer ', '', $authHeader);
 try {
     $decoded = JWT::decode($token, new Key($key, 'HS256'));
     $userId = $decoded->user_id;
+    $userRole=$decoded->user_role;
 } catch (Exception $e) {
     echo json_encode(["success" => false, "error" => "Invalid token"]);
     exit;
@@ -75,7 +76,14 @@ if (empty($updates)) {
     exit;
 }
 
-$query = "UPDATE user_info SET " . implode(", ", $updates) . " WHERE user_id = ?";
+switch ($userRole){
+    case 'user':
+        $query = "UPDATE user_info SET " . implode(", ", $updates) . " WHERE user_id = ?";
+        break;
+    case 'company':
+        $query = "UPDATE companies SET " . implode(", ", $updates) . " WHERE id = ?";
+
+}
 $types .= "i";
 $values[] = $userId;
 
