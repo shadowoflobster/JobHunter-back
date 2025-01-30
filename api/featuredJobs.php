@@ -18,6 +18,7 @@ $query = "
             job_listings.location, 
             job_listings.category,
             companies.name AS company_name,
+            companies.profile_image AS profile_image,
             job_listings.title
         FROM 
             job_listings

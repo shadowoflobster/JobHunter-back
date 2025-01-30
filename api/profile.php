@@ -75,6 +75,7 @@ if (isset($header['Authorization'])) {
                     companies.name,
                     companies.email,
                     companies.profile_image,
+                    companies.about_me,
                     companies.website,
                     companies.description,
                     companies.address,
@@ -126,9 +127,10 @@ if (isset($header['Authorization'])) {
                             'id' => $row['id'],
                             'name' => $row['name'],
                             'email' => $row['email'],
+                            'about_me'=>$row['about_me'],
                             'profile_image' => $row['profile_image'],
                             'website' => $row['website'],
-                            'address' => $row['address'],
+                            'address' => $row['address']
                         ];
                     } else if ($userRole == 'user') {
                         $userInfo = [
@@ -138,6 +140,8 @@ if (isset($header['Authorization'])) {
                             'profile_image' => $row['profile_image'],
                             'website' => $row['website'],
                             'address' => $row['address'],
+                            'position'=>$row['position'],
+                            'about_me'=>$row['about_me'],
                             'skills'=>$row['skills']
 
                         ];
