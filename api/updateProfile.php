@@ -21,7 +21,7 @@ require 'vendor/autoload.php';
 $data = json_decode(file_get_contents("php://input"), true);
 $header = apache_request_headers();
 $key = "1234";
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 

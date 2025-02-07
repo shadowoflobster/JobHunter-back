@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 
 // Load the Firebase JWT library
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 use Firebase\JWT\JWT;
 try{
 $data = json_decode(file_get_contents("php://input"), true);
