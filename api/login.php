@@ -20,8 +20,16 @@ if (empty($data['email']) || empty($data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-$mysqli = new mysqli("localhost", "root", "", "example");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/..');
+$dotenv->load();
 
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 // Check connection
 if ($mysqli->connect_error) {
     die(json_encode(["error" => "Error connecting to the database: " . $mysqli->connect_error]));

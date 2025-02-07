@@ -8,10 +8,19 @@ header('Content-Type: application/json');
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/..');
+$dotenv->load();
 
 $key = "1234";
-$mysqli = new mysqli("localhost", "root", "", "example");
+
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 if ($mysqli->connect_error) {
     die(json_encode(["error" => "Error connecting to the database: " . $mysqli->connect_error]));
 }

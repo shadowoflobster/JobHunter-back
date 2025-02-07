@@ -20,8 +20,17 @@
     // Hash the password securely
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $mysqli = new mysqli("localhost", "root", "", "example");
+    require_once __DIR__ . '/vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
+    $dotenv->load();
+    
+    $host = $_ENV['DB_HOST'];
+    $user = $_ENV['DB_USER'];
+    $password = $_ENV['DB_PASSWORD'];
+    $dbname = $_ENV['DB_NAME'];
 
+// Create the MySQL connection
+$mysqli = new mysqli($host, $user, $password, $dbname);
     // Check connection
     if ($mysqli->connect_error) {
         echo json_encode(["status" => "error", "message" => "Database connection failed."]);

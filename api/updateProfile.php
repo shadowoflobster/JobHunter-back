@@ -21,8 +21,17 @@ require 'vendor/autoload.php';
 $data = json_decode(file_get_contents("php://input"), true);
 $header = apache_request_headers();
 $key = "1234";
-$mysqli = new mysqli("localhost", "root", "", "example");
+require_once __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
+$dotenv->load();
 
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 if ($mysqli->connect_error) {
     echo json_encode(["success" => false, "error" => "Database connection failed: " . $mysqli->connect_error]);
     exit;

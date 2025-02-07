@@ -7,8 +7,17 @@ header("Access-Control-Allow-Headers: Content-Type"); // Allow these headers
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
-$mysqli = new mysqli("localhost", "root", "", "example");
+require_once __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
+$dotenv->load();
 
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }

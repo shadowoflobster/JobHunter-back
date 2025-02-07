@@ -5,8 +5,17 @@ header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 
-$mysqli = new mysqli("localhost", "root", "", "example");
+require_once __DIR__ . '/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/..');
+$dotenv->load();
 
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
 if ($mysqli->connect_error) {
     echo json_encode(["status" => "error", "message" => "Database connection failed: " . $mysqli->connect_error]);
     exit();
@@ -22,6 +31,7 @@ if ($mysqli->connect_error) {
         job_listings.requirements, 
         job_listings.currency, 
         job_listings.location, 
+        job_listings.updated_at,
         job_listings.category,
         companies.name AS company_name,
         companies.profile_image AS profile_image,

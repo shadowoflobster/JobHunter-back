@@ -4,6 +4,8 @@
     header("Access-Control-Allow-Headers: Content-Type");
     header('Content-Type: application/json');
 
+    require_once __DIR__ . '/vendor/autoload.php';
+
     $data = json_decode(file_get_contents('php://input'), true);
     if(empty($data['title']) ||  empty($data['description']) ||
 
@@ -32,8 +34,16 @@
     $category = $data['category'];
     $types = 'sssssss';
 
-    $mysqli = new mysqli("localhost", "root", "", "example");
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
+$dotenv->load();
 
+$db_host = $_ENV['DB_HOST'];
+$db_user = $_ENV['DB_USER'];
+$db_password = $_ENV['DB_PASSWORD'];
+$db_name = $_ENV['DB_NAME'];
+
+// Create the MySQL connection
+$mysqli = new mysqli($db_host, $db_user, $db_password, $db_name);
     if ($mysqli->connect_error) {
         echo json_encode(["status" => "error", "message" => "Database connection failed."]);
         exit;
